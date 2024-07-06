@@ -22,3 +22,4 @@ The Flask web application allows users to:
 
 Upload an MRI image via a web interface.
 Receive real-time predictions on whether the uploaded image contains a brain tumor.
+Uploaded images are saved in the 'uploads' folder within the project directory.
