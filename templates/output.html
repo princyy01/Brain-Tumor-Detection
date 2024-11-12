@@ -2,17 +2,219 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Brain Tumor Detection</title>    
-</head>
-<body style="background-color: rgb(188, 231, 107);">
+    <title>Brain Tumor Detection</title>
+    <style>
+        /* Background and overall page styling */
+        body {
+            margin-top: 150px;
+            background-image: url("{{ url_for('static', filename='A.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+        }
 
-    <div class="container">
-        <h3 style="text-align: center; margin-top: 300px;">Result of your Brain :- {{ Result }}</h3>
+        /* Moving images styling */
+        .moving-images {
+            margin-top: 200px;
+            position: fixed;
+            top: 280px;
+            left: 0;
+            width: 100%;
+            height: 350px;
+            display: flex;
+            animation: moveImages 15s linear infinite; /* Faster speed */
+        }
+        
+        .moving-images img {
+            height: 100%;
+            margin-right: 0; /* Remove margin between images */
+        }
+
+        @keyframes moveImages {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-50%); /* Moves it completely out of view */
+            }
+        }
+
+        /* Second set of moving images styling */
+        .moving-images.reverse {
+            top: 650px;
+            animation: moveImagesReverse 10s linear infinite; /* Faster speed */
+        }
+        
+        @keyframes moveImagesReverse {
+            0% {
+                transform: translateX(-50%); /* Start from the right */
+            }
+            100% {
+                transform: translateX(0%); /* Move to the left */
+            }
+        }
+
+        /* Result container styling */
+        .container {
+            margin-top: 100px;
+            position: relative;
+            text-align: center;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.85);
+            max-width: 1500px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Result text styling */
+        h3 {
+            font-size: 4.0em;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        /* Dropdown button container styling */
+        .button-container {
+            position: fixed;
+            top: 0px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.85);
+            z-index: 10;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown button {
+            background-color: #5a9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            font-size: 2.0em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown button:hover {
+            background-color: #4a8;
+        }
+
+        /* Dropdown content styling */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .dropdown-content p {
+            color: #333;
+            font-size: 1.5em; /* Increased font size */
+            margin: 0;
+            padding: 8px 10px;
+        }
+
+        /* Show dropdown on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dropdown Button Section at the Top -->
+    <div class="button-container">
+        <div class="dropdown">
+            <button>Prevention</button>
+            <div class="dropdown-content">
+                <p>• Regular check-ups are essential.</p>
+                <p>• Eat a balanced diet with vegetables.</p>
+                <p>• Avoid exposure to harmful substances.</p>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button>Symptoms</button>
+            <div class="dropdown-content">
+                <p>• Persistent headaches and nausea.</p>
+                <p>• Vision and speech difficulties.</p>
+                <p>• Seizures and memory issues.</p>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button>Helpline</button>
+            <div class="dropdown-content">
+                <p>• For immediate assistance, call 1-800-123-4567.</p>
+                <p>• Available 24/7 for support.</p>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button>Treatment Options</button>
+            <div class="dropdown-content">
+                <p>• Surgery to remove the tumor.</p>
+                <p>• Radiation therapy for targeted treatment.</p>
+                <p>• Chemotherapy to prevent growth.</p>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button>More Information</button>
+            <div class="dropdown-content">
+                <p>• Discuss options with your doctor.</p>
+                <p>• Personalized treatment plan.</p>
+            </div>
+        </div>
     </div>
-    
+
+    <!-- First set of Moving Images -->
+    <div class="moving-images">
+        <img src="{{ url_for('static', filename='I.jpg') }}" alt="Image A">
+        <img src="{{ url_for('static', filename='E.jpg') }}" alt="Image B">
+        <img src="{{ url_for('static', filename='F.jpg') }}" alt="Image C">
+        <img src="{{ url_for('static', filename='G.jpg') }}" alt="Image D">
+        <img src="{{ url_for('static', filename='H.jpg') }}" alt="Image E">
+        <img src="{{ url_for('static', filename='J.jpg') }}" alt="Image F">
+        <img src="{{ url_for('static', filename='L.jpg') }}" alt="Image G">
+    </div>
+
+    <!-- Second set of Moving Images (opposite direction) -->
+    <div class="moving-images reverse">
+        <img src="{{ url_for('static', filename='K.jpg') }}" alt="Image H">
+        <img src="{{ url_for('static', filename='L.jpg') }}" alt="Image I">
+        <img src="{{ url_for('static', filename='M.jpg') }}" alt="Image J">
+        <img src="{{ url_for('static', filename='N.jpg') }}" alt="Image K">
+        <img src="{{ url_for('static', filename='O.jpg') }}" alt="Image L">
+        <img src="{{ url_for('static', filename='P.jpg') }}" alt="Image M">
+        <img src="{{ url_for('static', filename='B.jpg') }}" alt="Image N">
+    </div>
+
+    <!-- Result Container -->
+    <div class="container">
+        <h3>RESULT OF SCAN: {{ Result }}</h3>
+    </div>
+
 </body>
 </html>
-
-
